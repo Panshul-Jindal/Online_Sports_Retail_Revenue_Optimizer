@@ -1,0 +1,32 @@
+.item-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .item-container h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .item-container p {
+    margin: 5px 0;
+  }
+  
+  .item-container button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .item-container button:hover {
+    background-color: #0056b3;
+  }
+  

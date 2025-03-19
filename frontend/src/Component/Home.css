@@ -1,0 +1,29 @@
+
+  .logout-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .logout-button:hover {
+    background-color: #ff1a1a;
+  }
+  
+  .home-content {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  .home-content h1 {
+    font-size: 2.5rem;
+    color: #333;
+  }
+  
+  .home-content p {
+    font-size: 1.2rem;
+    color: #666;
+  }
+  

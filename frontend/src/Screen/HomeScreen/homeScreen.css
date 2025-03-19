@@ -1,0 +1,74 @@
+/* Container */
+.home-container {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+  
+  /* Header Section */
+  .home-header {
+    background-color: #007bff;
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+  }
+  
+  .home-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .home-header p {
+    font-size: 1.2rem;
+  }
+  
+  /* Description Section */
+  .home-description {
+    margin: 30px 0;
+  }
+  
+  .home-description h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .home-description ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .home-description ul li {
+    font-size: 1.1rem;
+    margin: 10px 0;
+  }
+  
+  /* Actions Section */
+  .home-actions {
+    margin: 20px 0;
+  }
+  
+  button {
+    font-size: 1rem;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .login-button {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .signup-button {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  button:hover {
+    opacity: 0.9;
+  }
+  
