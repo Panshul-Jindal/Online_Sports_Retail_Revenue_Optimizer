@@ -21,7 +21,7 @@ const SearchItems = () => {
           queryParams.append("categories", selectedCategories.join(","));
 
         const response = await axios.get(
-          `http://localhost:5000/products/search?${queryParams.toString()}`
+          `http://localhost:5000/api/products/search?${queryParams.toString()}`
         );
         setProducts(response.data);
       } catch (error) {
@@ -36,7 +36,10 @@ const SearchItems = () => {
     // Fetch all unique categories for filtering
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/products/categories");
+        const response = await axios.get(
+          "http://localhost:5000/api/products/categories"
+        );
+        console.log(response.data);
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -46,20 +49,20 @@ const SearchItems = () => {
     fetchCategories();
   }, []);
 
-  const toggleCategory = (category) => {
+  const toggleCategory = (categoryId) => {
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
+      prev.includes(categoryId)
+        ? prev.filter((id) => id !== categoryId)
+        : [...prev, categoryId]
     );
   };
 
   const handleViewDetails = (productId) => {
     console.log(productId);
     if (!productId) {
-        console.error("Product ID is undefined");
-        return;
-      }
+      console.error("Product ID is undefined");
+      return;
+    }
     navigate(`/products/${productId}`);
   };
 
@@ -78,14 +81,14 @@ const SearchItems = () => {
         <div className="categories">
           <h3>Filter by Categories</h3>
           {categories.map((cat) => (
-            <label key={cat}>
+            <label key={cat.category_id}>
               <input
                 type="checkbox"
-                value={cat}
-                checked={selectedCategories.includes(cat)}
-                onChange={() => toggleCategory(cat)}
+                value={cat.category_name}
+                checked={selectedCategories.includes(cat.category_id)}
+                onChange={() => toggleCategory(cat.category_id)}
               />
-              {cat}
+              {cat.category_name}
             </label>
           ))}
         </div>

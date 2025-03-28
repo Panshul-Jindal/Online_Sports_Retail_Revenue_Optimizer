@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Chat = require("../models/Chat");
+// const Chat = require("../models/Chat");
 const axios = require("axios");
 const { v4: uuidv4 } = require("uuid");
 

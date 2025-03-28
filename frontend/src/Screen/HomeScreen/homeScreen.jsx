@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./homeScreen.css";
 import Navbar from "../../Component/Navbar/Navbar";
-import Footer from "../../Component/Footer/footer";
+import Footer from "../../Component/Footer/Footer";
 const HomeScreen = () => {
   const navigate = useNavigate();
 

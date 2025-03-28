@@ -9,8 +9,11 @@ var cors = require("cors");
 const bcrypt = require("bcrypt"); // or 'bcryptjs'
 const { Pool } = require("pg"); // Add PostgreSQL library
 
+
+
+
 const corsOptions = {
-  origin: "http://localhost:3000", // Replace with your frontend's URL
+  origin: "http://localhost:5173", // Replace with your frontend's URL
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true, // Allow cookies
 };
@@ -19,7 +22,7 @@ const corsOptions = {
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'lets_go_crazy',
+  database: 'DBMS_Project',
   password: 'harekrishna',
   port: 5432,
 });
@@ -31,10 +34,13 @@ pool.connect()
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var authRouter = require("./routes/auth");
-var productRoutes = require("./routes/Product");
+var productRoutes = require("./routes/api/products");
 var cartRoutes = require("./routes/Cart");
 var orderRoutes = require("./routes/Order");
 var chatRoutes = require("./routes/Chatbot");
+
+
+
 var app = express();
 app.use(cors(corsOptions));
 
@@ -55,42 +61,83 @@ app.use(
     cookie: { secure: false },
   })
 );
+
+
+//Products
+
+app.use("/api/products", productRoutes(pool));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // app.use(express.static(path.join(__dirname, "public")));
 // below line is needed to connect static files in frontend with the backend so that those files can be included in the server without
 // app.use(express.static(path.join(__dirname, "../frontend/build")));
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Handle React routing
 
-app.get("/products", (req, res) => {
-  console.log("GET /products is a hit");
 
-  pool.query('SELECT * FROM products', (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res.json(results.rows);
-  });
-});
 
-// Routes
-app.use("/auth", authRouter); // Use auth.js routes under the '/auth' endpoint
+// // Routes
+// app.use("/auth", authRouter); // Use auth.js routes under the '/auth' endpoint
 
-app.use("/products", productRoutes);
-app.use("/cart", cartRoutes);
-app.use("/orders", orderRoutes);
-app.use("/chatbot", chatRoutes);
+// app.use("/products", productRoutes);
+// app.use("/cart", cartRoutes);
+// app.use("/orders", orderRoutes);
+// app.use("/chatbot", chatRoutes);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+// });
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+// app.use("/", indexRouter);
+// app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
+
+
+
+
 
 // error handler
 app.use(function (err, req, res, next) {

@@ -139,7 +139,7 @@
 //             <ProtectedRoute>
 //               <DeliverItems />
 //             </ProtectedRoute>
-//           }
+//           }next js tutorial
 //         />
 //         <Route
 //           path="/my-cart"
@@ -174,8 +174,8 @@ import HomeScreen from "./Screen/HomeScreen/homeScreen";
 import LoginPage from "./Component/LoginPage";
 import SignupPage from "./Component/SignupPage";
 import ProfilePage from "./Component/ProfilePage";
-import Home from "./Component/Homepage";
-import Products from "./Component/product";
+import Home from "./Component/Home";
+import Products from "./Component/Product";
 import SearchItems from "./Component/SearchItems";
 import ItemDetailsPage from "./Component/Items";
 import SellPage from "./Component/Sell";
@@ -184,22 +184,8 @@ import DeliverItems from "./Component/DeliverItems";
 import MyCart from "./Component/MyCart";
 import Chatbot from "./Component/Chatbot";
 
-const API = axios.create({
-  baseURL: "http://localhost:5000", // Base URL of your backend
-});
 
-// Example: Fetch products
-export const fetchProducts = async () => {
-  try {
-    console.log("Sending request to /products");
-    const response = await API.get("/products");
-    console.log("Received raw response:", response);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    throw error;
-  }
-};
+
 
 function App() {
   return (

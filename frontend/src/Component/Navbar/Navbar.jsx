@@ -2,6 +2,9 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import Cookies from "js-cookie";
+// import SearchIcon from "@material-ui/icons/Search";
+import { Home, Favorite, Delete } from "@mui/icons-material";
+
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -15,8 +18,21 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-logo">
-          <Link to="/home">IIIT Buy Sell Rent</Link>
+          <Link to="/home">Your Shop</Link>
         </div>
+
+        {/* <div className="header__search">
+        <input className="header__searchInput" type="text" />
+        <SearchIcon className="header__searchIcon" />
+      </div> */}
+
+      {/* <Home fontSize="large" color="primary" />
+      <Favorite fontSize="medium" color="secondary" />
+      <Delete fontSize="small" color="error" />
+       */}
+
+
+        
         <ul className="navbar-links">
           <li>
             <Link to="/home">Home</Link>
@@ -42,6 +58,7 @@ const Navbar = () => {
           <li>
             <Link to="/profile">Profile</Link>
           </li>
+
           <li>
             <button onClick={handleLogout} className="logout-button">
               Logout

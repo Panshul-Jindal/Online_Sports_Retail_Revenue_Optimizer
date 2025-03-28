@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Product = require("../models/Product"); // Import your product model
-const User = require("../models/User"); // Import your user model
+// const Product = require("../models/Product"); // Import your product model
+// const User = require("../models/User"); // Import your user model
 const Cookies = require('cookies'); // Import cookies package
 
 // Add item to cart
