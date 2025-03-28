@@ -23,15 +23,73 @@ module.exports = (pool) => {
   // Route to add a product
   router.post("/add", async (req, res) => {
     try {
-      const { name, price, description, category, sellerId } = req.body;
+      const {
+        name,
+        brand,
+        category,
+        cost_price,
+        selling_price,
+        mrp,
+        supplier_id,
+   
+      } = req.body;
 
-      const query = `
-        INSERT INTO Products (name, selling_price, description, category, seller_id)
-        VALUES ($1, $2, $3, $4, $5) RETURNING *;
+      console.log(req.body)
+  
+      // Validate that MRP >= Selling Price
+      if (parseFloat(mrp) < parseFloat(selling_price)) {
+        return res.status(400).json({ message: "MRP must be greater than or equal to the Selling Price." });
+      }
+  
+      // Fetch brand_id based on brand name
+      const brandQuery = "SELECT brand_id FROM Brand WHERE name = $1";
+      const brandResult = await pool.query(brandQuery, [brand]);
+  
+      if (brandResult.rows.length === 0) {
+        console.log( "Brand not found");
+        return res.status(400).json({ message: `Brand '${brand}' does not exist.` });
+      }
+      const brand_id = brandResult.rows[0].brand_id;
+  
+      // Fetch category_id based on category name
+      const categoryQuery = "SELECT category_id FROM Categories WHERE name = $1";
+      const categoryResult = await pool.query(categoryQuery, [category]);
+  
+      if (categoryResult.rows.length === 0) {
+        console.log( "Category not found");
+        return res.status(400).json({ message: `Category '${category}' does not exist.` });
+      }
+      const category_id = categoryResult.rows[0].category_id;
+  
+      // Check if supplier_id exists in the Suppliers table
+      const supplierQuery = "SELECT supplier_id FROM Suppliers WHERE supplier_id = $1";
+      const supplierResult = await pool.query(supplierQuery, [supplier_id]);
+  
+      if (supplierResult.rows.length === 0) {
+        console.log("Supplier not found");
+        return res.status(400).json({ message: `Supplier with ID '${supplier_id}' does not exist.` });
+      }
+  
+      // Insert the product into the Products table
+      const insertProductQuery = `
+        INSERT INTO Products (
+          name, brand_id, category_id, cost_price, selling_price, mrp, supplier_id
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING *;
       `;
-      const values = [name, price, description, category, sellerId];
+      const values = [
+        name,
+        brand_id,
+        category_id,
+        cost_price,
+        selling_price,
+        mrp,
+        supplier_id,
 
-      const result = await pool.query(query, values);
+      ];
+  
+      const result = await pool.query(insertProductQuery, values);
       res.status(201).json({ message: "Product added successfully!", product: result.rows[0] });
     } catch (error) {
       console.error("Error adding product:", error);

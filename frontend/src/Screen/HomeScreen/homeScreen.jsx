@@ -11,17 +11,17 @@ const HomeScreen = () => {
     {/* <Navbar /> */}
     <div className="home-container">
       <header className="home-header">
-        <h1>Welcome to Buy-Sell-Rent</h1>
-        <p>Your one-stop solution for buying, selling, and renting items within the IIIT Community!</p>
+        <h1>Welcome to your Online Shop</h1>
+        <p>By Panshul Shreeja Yashasvi Sreenandan</p>
       </header>
 
       <section className="home-description">
         <h2>About Us</h2>
-        <p>Our platform connects the IIIT community members, allowing you to:</p>
+        <p>Our platform allows to transfrom a offline sports retail business to online with dynamically adjusting prices</p>
         <ul>
-          <li>Buy essential items at reasonable prices.</li>
-          <li>Sell your used items to others in need.</li>
-          <li>Rent items for short-term usage without hassle.</li>
+          <li>Sell all your items</li>
+          <li>Get valuable insights about your revenue</li>
+          <li>Get data driven Insights for optimzing your revenue and stock</li>
         </ul>
       </section>
 

@@ -20,7 +20,7 @@ const MyCart = () => {
         }
 
         // Sending the userId along with the request
-        const response = await axios.get("http://localhost:5000/cart/mycart", {
+        const response = await axios.get("http://localhost:5000/api/cart/mycart", {
           withCredentials: true, // Ensure cookies are sent
         });
 
@@ -28,9 +28,10 @@ const MyCart = () => {
         const filteredCart = response.data.cart.filter(
           (item) => item.sellerId !== userId
         );
+        console.log(filteredCart)
 
         // Calculate the total cost of all items
-        const total = filteredCart.reduce((sum, item) => sum + item.price, 0);
+        const total = filteredCart.reduce((sum, item) => sum + Number(item.selling_price), 0);
         setTotalCost(total);
 
         setCart(filteredCart);
@@ -53,7 +54,7 @@ const MyCart = () => {
       }
 
       // Send request to remove the item from the cart
-      const response = await axios.delete("http://localhost:5000/cart/remove", {
+      const response = await axios.delete("http://localhost:5000/api/cart/remove", {
         data: { productId },
         withCredentials: true, // Ensure cookies are sent
       });
@@ -65,7 +66,7 @@ const MyCart = () => {
       setCart(updatedCart); // Update cart with the removed item
       // Update the total cost after removal
       const updatedTotalCost = updatedCart.reduce(
-        (sum, item) => sum + item.price,
+        (sum, item) => sum + Number(item.price),
         0
       );
       setTotalCost(updatedTotalCost);
@@ -80,12 +81,13 @@ const MyCart = () => {
         alert("Please log in to place an order.");
         return;
       }
+      console.log(cart);
   
       const response = await axios.post(
-        "http://localhost:5000/orders",
+        "http://localhost:5000/api/order/",
         {
           userId,
-          cartItems: cart.map((item) => item._id),
+          cartItems: cart
         },
         { withCredentials: true }
       );
@@ -93,9 +95,10 @@ const MyCart = () => {
       if (response.status === 200) {
         alert("Order placed successfully! Check your Orders History page.");
         const { orders, otps } = response.data;
+
   
         // You can store OTPs in localStorage, session storage, or state for use in the Orders History page.
-        localStorage.setItem("otps", JSON.stringify(otps));
+        // localStorage.setItem("otps", JSON.stringify(otps));
   
         setCart([]); // Clear the cart locally
         setTotalCost(0);
@@ -127,10 +130,10 @@ const MyCart = () => {
           <div key={item._id} className="cart-item">
             <div className="cart-item-details">
               <h2>{item.name}</h2>
-              <p>Price: ₹{item.price}</p>
-              <p>Category: {item.category}</p>
-              <p>Description: {item.description}</p>
-              <button onClick={() => handleRemove(item._id)}>
+              <p>Price: ₹{item.selling_price}</p>
+              {/* <p>Category: {item.category}</p> */}
+              {/* <p>Description: {item.description}</p> */}
+              <button onClick={() => handleRemove(item.product_id)}>
                 Remove from Cart
               </button>
             </div>

@@ -10,6 +10,24 @@ const bcrypt = require("bcrypt"); // or 'bcryptjs'
 const { Pool } = require("pg"); // Add PostgreSQL library
 
 
+// const API = axios.create({
+//   baseURL: "http://localhost:5173", // Base URL of your backend
+// });
+
+// // Example: Fetch products
+// export const fetchProducts = async () => {
+//   try {
+//     console.log("Sending request to /products");
+//     const response = await API.get("/products"); // Check if API is properly set up
+//     console.log("Received raw response:", response);
+//     const data = await response.data; // Adjust for Axios (no need for `.json()`)
+//     console.log("Parsed data:", data);
+//     return data;
+//   } catch (error) {
+//     console.error("Error fetching products:", error);
+//     throw error;
+//   }
+// };
 
 
 const corsOptions = {
@@ -33,10 +51,10 @@ pool.connect()
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-var authRouter = require("./routes/auth");
+var authRouter = require("./routes/api/auth");
 var productRoutes = require("./routes/api/products");
-var cartRoutes = require("./routes/Cart");
-var orderRoutes = require("./routes/Order");
+var cartRoutes = require("./routes/api/Cart");
+var orderRoutes = require("./routes/api/order");
 var chatRoutes = require("./routes/Chatbot");
 
 
@@ -63,16 +81,12 @@ app.use(
 );
 
 
-//Products
+
 
 app.use("/api/products", productRoutes(pool));
-
-
-
-
-
-
-
+app.use("/api/auth", authRouter(pool)); 
+app.use("/api/cart", cartRoutes(pool));
+app.use("/api/order", orderRoutes(pool));
 
 
 
@@ -93,24 +107,6 @@ app.use("/api/products", productRoutes(pool));
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Handle React routing
 
 
@@ -119,8 +115,8 @@ app.use("/api/products", productRoutes(pool));
 // app.use("/auth", authRouter); // Use auth.js routes under the '/auth' endpoint
 
 // app.use("/products", productRoutes);
-// app.use("/cart", cartRoutes);
-// app.use("/orders", orderRoutes);
+
+
 // app.use("/chatbot", chatRoutes);
 
 // app.get("*", (req, res) => {

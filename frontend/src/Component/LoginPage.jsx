@@ -15,7 +15,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/auth/login",
+        "http://localhost:5000/api/auth/login",
         { email, password },
         { withCredentials: true } // Ensure cookies are sent/stored
       );
@@ -23,7 +23,7 @@ const LoginPage = () => {
       if (response.status === 200) {
         // Check if login is successful
         Cookies.set("userId", response.data.userId); // Store the userId in cookies
-        navigate("/profile"); // Redirect to profile page
+        navigate("/home"); // Redirect to profile page
       }
     } catch (error) {
       if (error.response && error.response.data.message) {

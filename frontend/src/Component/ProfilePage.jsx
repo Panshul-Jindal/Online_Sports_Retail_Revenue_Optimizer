@@ -15,7 +15,7 @@ const ProfilePage = () => {
       if (!userId) return;
 
       try {
-        const response = await axios.get(`http://localhost:5000/auth/user/${userId}`, {
+        const response = await axios.get(`http://localhost:5000/api/auth/user/${userId}`, {
           withCredentials: true,
         });
         setUser(response.data);
@@ -29,14 +29,14 @@ const ProfilePage = () => {
   }, []);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; 
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSave = async () => {
     const userId = Cookies.get("userId");
     try {
-      await axios.put(`http://localhost:5000/auth/user/${userId}`, formData, {
+      await axios.put(`http://localhost:5000/api/auth/user/${userId}`, formData, {
         withCredentials: true,
       });
       setUser(formData); // Update the user data with the updated form data
@@ -56,17 +56,11 @@ const ProfilePage = () => {
         <div className="profile-card">
           {isEditing ? (
             <div className="profile-form">
-              <label>First Name:</label>
+            
+              <label>Name:</label>
               <input
                 type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-              />
-              <label>Last Name:</label>
-              <input
-                type="text"
-                name="lastName"
+                name="name"
                 value={formData.lastName}
                 onChange={handleInputChange}
               />
@@ -78,20 +72,23 @@ const ProfilePage = () => {
                 onChange={handleInputChange}
                 disabled
               />
-              <label>Age:</label>
+
+
+              
+              {/* <label>Age:</label>
               <input
                 type="number"
                 name="age"
                 value={formData.age}
                 onChange={handleInputChange}
-              />
-              <label>Contact Number:</label>
+              /> */}
+              {/* <label>Contact Number:</label>
               <input
                 type="text"
                 name="contactNumber"
                 value={formData.contactNumber}
                 onChange={handleInputChange}
-              />
+              /> */}
               <div className="profile-buttons">
                 <button onClick={handleSave} className="save-button">
                   Save
@@ -107,20 +104,16 @@ const ProfilePage = () => {
           ) : (
             <div className="profile-details">
               <p>
-                <strong>First Name:</strong> {user.firstName}
+                <strong>Name:</strong> {user.name}
               </p>
-              <p>
-                <strong>Last Name:</strong> {user.lastName}
-              </p>
+             
               <p>
                 <strong>Email:</strong> {user.email}
               </p>
               <p>
-                <strong>Age:</strong> {user.age}
+                <strong>Role:</strong> {user.role}
               </p>
-              <p>
-                <strong>Contact Number:</strong> {user.contactNumber}
-              </p>
+              
               <button
                 onClick={() => setIsEditing(true)}
                 className="edit-button"

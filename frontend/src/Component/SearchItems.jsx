@@ -12,6 +12,7 @@ const SearchItems = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+  
     // Fetch all products based on filters
     const fetchProducts = async () => {
       try {
@@ -40,8 +41,9 @@ const SearchItems = () => {
         const response = await axios.get(
           "http://localhost:5000/api/products/categories"
         );
-        console.log(response.data);
+        console.log("Categories Fetched ",response.data);
         setCategories(response.data);
+        console.log("Categories After setting",categories)
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -49,6 +51,12 @@ const SearchItems = () => {
 
     fetchCategories();
   }, []);
+
+
+  // Debug updated categories
+useEffect(() => {
+  console.log("Updated categories:", categories);
+}, [categories]);
 
   const toggleCategory = (categoryId) => {
     setSelectedCategories((prev) =>
@@ -64,6 +72,7 @@ const SearchItems = () => {
       console.error("Product ID is undefined");
       return;
     }
+    console.log("Navigating to product with id",productId)
     navigate(`/products/${productId}`);
   };
 
@@ -79,20 +88,21 @@ const SearchItems = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <div className="categories">
-          <h3>Filter by Categories</h3>
-          {categories.map((cat) => (
-            <label key={cat.category_id}>
-              <input
-                type="checkbox"
-                value={cat.category_name}
-                checked={selectedCategories.includes(cat.category_id)}
-                onChange={() => toggleCategory(cat.category_id)}
-              />
-              {cat.category_name}
-            </label>
-          ))}
-        </div>
+       <div className="categories">
+  <h3>Filter by Categories</h3>
+  {categories.length === 0 && <p>No categories available</p>} {/* Fallback message */}
+  {categories.map((cat) => (
+    <label key={1000 + cat.category_id}>
+      <input
+        type="checkbox"
+        value={cat.category_name}
+        checked={selectedCategories.includes(cat.category_id)}
+        onChange={() => toggleCategory(cat.category_id)}
+      />
+      {cat.category_name} 
+    </label>
+  ))}
+</div>
         <div className="product-list">
           {products.map((product) => (
             <div key={product.product_id} className="product-card">

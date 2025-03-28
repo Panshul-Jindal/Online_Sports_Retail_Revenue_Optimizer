@@ -1,8 +1,10 @@
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Navbar from "./Navbar/Navbar";
-import "./Orderhistory.css"
+import "./Orderhistory.css";
+
 const OrdersHistory = () => {
   const [orders, setOrders] = useState([]);
   const userId = Cookies.get("userId");
@@ -10,21 +12,41 @@ const OrdersHistory = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/orders/${userId}`);
-        const otps = JSON.parse(localStorage.getItem("otps")) || {}; // Retrieve OTPs from localStorage
+        const response = await axios.get(`http://localhost:5000/api/order/${userId}`);
+        console.log(response);
 
-        const fetchedOrders = response.data.orders.map((order) => ({
-          ...order,
-          otp: otps[order._id] || "Not available", // Attach the OTP if it exists
-        }));
-        setOrders(fetchedOrders);
+        // Group orders by order_id and include corresponding products
+        const groupedOrders = response.data.orders.reduce((acc, order) => {
+          const { order_id, total_amount, status, product_id, quantity, selling_price } = order;
+
+          if (!acc[order_id]) {
+            acc[order_id] = {
+              order_id,
+              total_amount,
+              status,
+              products: [],
+            };
+          }
+
+          acc[order_id].products.push({
+            product_id,
+            quantity,
+            selling_price,
+          });
+
+          return acc;
+        }, {});
+
+        // Convert grouped orders object to an array
+        const formattedOrders = Object.values(groupedOrders);
+        setOrders(formattedOrders);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
     };
 
     fetchOrders();
-  }, [userId]); // Only include stable dependencies
+  }, [userId]);
 
   return (
     <>
@@ -33,12 +55,20 @@ const OrdersHistory = () => {
         <h1>Orders History</h1>
         {orders.length > 0 ? (
           orders.map((order) => (
-            <div key={order._id} className="order-item">
-              <p>Product: {order.productId.name}</p>
-              <p>Seller: {order.sellerId.firstName} {order.sellerId.lastName}</p>
-              <p>Amount: ₹{order.amount}</p>
-              <p>Status: {order.status}</p>
-              <p>OTP: {order.otp}</p>
+            <div key={order.order_id} className="order-item">
+              <p><strong>Order ID:</strong> {order.order_id}</p>
+              <p><strong>Total Amount:</strong> ₹{order.total_amount}</p>
+              <p><strong>Status:</strong> {order.status}</p>
+              <h3>Products:</h3>
+              <ul>
+                {order.products.map((product) => (
+                  <li key={product.product_id}>
+                    <p><strong>Product ID:</strong> {product.product_id}</p>
+                    <p><strong>Quantity:</strong> {product.quantity}</p>
+                    <p><strong>Price:</strong> ₹{product.selling_price}</p>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))
         ) : (
@@ -50,3 +80,5 @@ const OrdersHistory = () => {
 };
 
 export default OrdersHistory;
+
+

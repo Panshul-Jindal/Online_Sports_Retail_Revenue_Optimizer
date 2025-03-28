@@ -7,9 +7,13 @@ import "./Sell.css";
 const SellPage = () => {
   const [form, setForm] = useState({
     name: "",
-    price: "",
-    description: "",
+    brand: "",
     category: "",
+    cost_price: "",
+    selling_price: "",
+    mrp: "",
+    supplier_id: "",
+    // description: "",
   });
 
   const handleChange = (e) => {
@@ -25,12 +29,27 @@ const SellPage = () => {
         return;
       }
 
-      await axios.post("http://localhost:5000/products/add", {
+      // Validate that MRP >= Selling Price
+      if (parseFloat(form.mrp) < parseFloat(form.selling_price)) {
+        alert("MRP must be greater than or equal to the Selling Price.");
+        return;
+      }
+
+      await axios.post("http://localhost:5000/api/products/add", {
         ...form,
         sellerId,
       });
       alert("Product added successfully!");
-      setForm({ name: "", price: "", description: "", category: "" });
+      setForm({
+        name: "",
+        brand: "",
+        category: "",
+        cost_price: "",
+        selling_price: "",
+        mrp: "",
+        supplier_id: "",
+        // description: "",
+      });
     } catch (error) {
       console.error("Error adding product:", error);
       alert("Failed to add product");
@@ -51,27 +70,61 @@ const SellPage = () => {
             required
           />
           <input
-            name="price"
-            value={form.price}
+            name="brand"
+            value={form.brand}
             onChange={handleChange}
-            placeholder="Price"
-            type="number"
-            required
-          />
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            placeholder="Description"
+            placeholder="Brand Name"
             required
           />
           <input
             name="category"
             value={form.category}
             onChange={handleChange}
-            placeholder="Category"
+            placeholder="Category Name"
             required
           />
+          <input
+            name="cost_price"
+            value={form.cost_price}
+            onChange={handleChange}
+            placeholder="Cost Price"
+            type="number"
+            step="0.01"
+            required
+          />
+          <input
+            name="selling_price"
+            value={form.selling_price}
+            onChange={handleChange}
+            placeholder="Selling Price"
+            type="number"
+            step="0.01"
+            required
+          />
+          <input
+            name="mrp"
+            value={form.mrp}
+            onChange={handleChange}
+            placeholder="MRP"
+            type="number"
+            step="0.01"
+            required
+          />
+          <input
+            name="supplier_id"
+            value={form.supplier_id}
+            onChange={handleChange}
+            placeholder="Supplier ID"
+            type="number"
+            required
+          />
+          {/* <textarea
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            placeholder="Description"
+            required
+          /> */}
           <button type="submit">Sell</button>
         </form>
       </div>

@@ -5,12 +5,13 @@ import Cookies from "js-cookie"; // To manage cookies
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    
+    name:"",
     email: "",
-    age: "",
-    contactNumber: "",
+    
+    
     password: "",
+    role:""
   });
   const navigate = useNavigate();
 
@@ -21,7 +22,7 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/auth/register", {
+      const response = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,22 +51,14 @@ const SignupPage = () => {
         <h1 className="auth-title">Join Us!</h1>
         <p className="auth-subtitle">Create your account</p>
         <form className="auth-form" onSubmit={handleSignup}>
-          <label>First Name:</label>
+          
+          <label>Name</label>
           <input
             type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            placeholder="Enter your first name"
-            required
-          />
-          <label>Last Name:</label>
-          <input
-            type="text"
-            name="lastName"
+            name="name"
             value={formData.lastName}
             onChange={handleChange}
-            placeholder="Enter your last name"
+            placeholder="Enter name"
             required
           />
           <label>Email:</label>
@@ -74,27 +67,11 @@ const SignupPage = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Enter your IIIT email"
+            placeholder="Enter your email"
             required
           />
-          <label>Age:</label>
-          <input
-            type="number"
-            name="age"
-            value={formData.age}
-            onChange={handleChange}
-            placeholder="Enter your age"
-            required
-          />
-          <label>Contact Number:</label>
-          <input
-            type="text"
-            name="contactNumber"
-            value={formData.contactNumber}
-            onChange={handleChange}
-            placeholder="Enter your contact number"
-            required
-          />
+         
+        
           <label>Password:</label>
           <input
             type="password"
@@ -104,6 +81,16 @@ const SignupPage = () => {
             placeholder="Create a password"
             required
           />
+          <label>Role:</label>
+          <input
+            type="text"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            placeholder="Enter role"
+            required
+          />
+          <br></br>
           <button className="auth-button">Sign Up</button>
         </form>
         <p className="auth-footer">

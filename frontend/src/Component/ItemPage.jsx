@@ -25,7 +25,7 @@ const ItemPage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/products/${productId}`
+          `http://localhost:5000/api/products/${productId}`
         );
         setProduct(response.data);
         setLoading(false);
@@ -49,8 +49,8 @@ const ItemPage = () => {
 
       // Sending the productId and userId to add to the cart
       const response = await axios.post(
-        "http://localhost:5000/cart/add",
-        { userId, productId: product._id },
+        "http://localhost:5000/api/cart/add",
+        { userId, productId },
         { withCredentials: true } // Important to include the session cookie
       );
 
@@ -80,12 +80,12 @@ const ItemPage = () => {
       <Navbar />
       <div className="item-container">
         <h1>{product.name}</h1>
-        <p>Price: ₹{product.price}</p>
-        <p>Category: {product.category}</p>
-        <p>Description: {product.description}</p>
-        <p>
-          Seller: {product.sellerId.firstName} {product.sellerId.lastName}
-        </p>
+        <p>Price: ₹{product.selling_price}</p>
+     
+      
+
+    <p className="price">₹{product.selling_price}</p>
+    <p className="rating">⭐ {product.average_rating}</p>
         <button onClick={handleAddToCart}>Add to Cart</button>
 
         {/* Display any error message */}
