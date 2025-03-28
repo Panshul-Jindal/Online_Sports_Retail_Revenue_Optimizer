@@ -68,7 +68,7 @@ router.get("/categories", async (req, res) => {
     console.log("Categories",categories)
     if (query) {
       conditions.push(`name ILIKE $${values.length + 1}`);
-      values.push(`%${query}%`);
+      values.push(`%${query.replace(/'/g, "")}%`);
     }
   
     if (categories) {
