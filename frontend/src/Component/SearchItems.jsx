@@ -33,6 +33,7 @@ const SearchItems = () => {
   }, [search, selectedCategories]);
 
   useEffect(() => {
+    console.log("Fetching categories")
     // Fetch all unique categories for filtering
     const fetchCategories = async () => {
       try {
@@ -94,14 +95,13 @@ const SearchItems = () => {
         </div>
         <div className="product-list">
           {products.map((product) => (
-            <div key={product._id} className="product-card">
+            <div key={product.product_id} className="product-card">
               <h2>{product.name}</h2>
-              <p>Price: ₹{product.price}</p>
-              <p>Category: {product.category}</p>
-              <p>
-                Seller: {product.sellerId.firstName} {product.sellerId.lastName}
-              </p>
-              <button onClick={() => handleViewDetails(product._id)}>
+              <p>Price: ₹{product.selling_price}</p>
+              {/* <p>Category: {product.category}</p> */}
+              <p className="price">₹{product.selling_price}</p>
+              <p className="rating">⭐ {product.average_rating}</p>
+              <button onClick={() => handleViewDetails(product.product_id)}>
                 View Details
               </button>
             </div>
