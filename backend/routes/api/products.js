@@ -173,10 +173,73 @@ router.get("/categories", async (req, res) => {
     }
   });
 
+  router.get("/:productId/reviews", async (req, res) => {
+    const { productId } = req.params;
+    const { page = 1, limit = 5 } = req.query; // Pagination parameters
+
+    console.log("Searching for Reviews for Product ID:", productId);
+  
+    try {
+      // Fetch reviews for the product with pagination
+      const offset = (page - 1) * limit;
+      const reviewsQuery = `
+        SELECT r.user_id, r.rating, r.review_text, r.review_date, u.name AS user_name
+        FROM customer_reviews r
+        INNER JOIN users u ON r.user_id = u.user_id
+        WHERE r.product_id = $1
+        ORDER BY r.review_date DESC
+        LIMIT $2 OFFSET $3
+      `;
+      const reviewsResult = await pool.query(reviewsQuery, [productId, limit, offset]);
+  
+      // Fetch the total number of reviews for the product
+      const countQuery = "SELECT COUNT(*) FROM customer_reviews WHERE product_id = $1";
+      const countResult = await pool.query(countQuery, [productId]);
+      const totalReviews = parseInt(countResult.rows[0].count, 10);
+  
+      res.status(200).json({
+        reviews: reviewsResult.rows,
+        totalReviews,
+        currentPage: parseInt(page, 10),
+        totalPages: Math.ceil(totalReviews / limit),
+      });
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      res.status(500).json({ message: "Error fetching reviews" });
+    }
+  });
 
 
+// Route to add a review for a product
+router.post("/:productId/reviews", async (req, res) => {
+  const { productId } = req.params;
+  const { userId, rating, review_text } = req.body;
 
+  try {
+    // Check if the user has already reviewed the product
+    const existingReviewQuery = `
+      SELECT * FROM Customer_Reviews WHERE user_id = $1 AND product_id = $2
+    `;
+    const existingReviewResult = await pool.query(existingReviewQuery, [userId, productId]);
 
+    if (existingReviewResult.rows.length > 0) {
+      return res.status(400).json({ message: "You have already reviewed this product." });
+    }
+
+    // Insert the new review into the Customer_Reviews table
+    const insertReviewQuery = `
+      INSERT INTO Customer_Reviews (user_id, product_id, rating, review_text)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;
+    `;
+    const reviewResult = await pool.query(insertReviewQuery, [userId, productId, rating, review_text]);
+
+    res.status(201).json({ message: "Review added successfully!", review: reviewResult.rows[0] });
+  } catch (error) {
+    console.error("Error adding review:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 
 

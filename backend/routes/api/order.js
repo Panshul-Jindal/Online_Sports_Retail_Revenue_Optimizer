@@ -7,41 +7,40 @@ module.exports = (pool) => {
 
   router.post("/", async (req, res) => {
     const { userId, cartItems } = req.body;
-
-    console.log("Recieved Request", req.body);
-    console.log("Recieved Request", req.body);
-
+  
+    console.log("Received Request", req.body);
+  
     try {
       // Check if the user exists
       const userQuery = "SELECT * FROM users WHERE user_id = $1";
       const userResult = await pool.query(userQuery, [userId]);
-
+  
       if (userResult.rows.length === 0) {
         return res.status(404).json({ message: "User not found." });
       }
-
-      if (cartItems.length == 0) {
-        return res.status(404).json({ message: "Cart is Empty" });
+  
+      if (cartItems.length === 0) {
+        return res.status(400).json({ message: "Cart is empty." });
       }
-
+  
       // Calculate the total amount for the order
       const totalAmount = cartItems.reduce(
         (sum, item) => sum + Number(item.selling_price),
         0
       );
-      const date = new Date().toISOString();
-
-      // Insert a new order into the Orders table
+  
+      // Call the stored procedure to insert the order
       const insertOrderQuery = `
-        INSERT INTO orders (user_id, order_date,total_amount, status)
-        VALUES ($1, $2, $3, 'Completed')
-        RETURNING order_id
+        SELECT insert_order($1, $2, $3) AS order_id;
       `;
-      const orderResult = await pool.query(insertOrderQuery, [userId, date, totalAmount]);
-      console.log(orderResult);
-
+      const orderResult = await pool.query(insertOrderQuery, [
+        userId,
+        totalAmount,
+        "Completed", // Default status
+      ]);
+  
       const orderId = orderResult.rows[0].order_id;
-
+  
       // Insert each product into the Order_Items table
       const insertOrderItemsQuery = `
         INSERT INTO order_items (order_id, product_id, quantity, selling_price)
@@ -55,11 +54,11 @@ module.exports = (pool) => {
           item.selling_price,
         ]);
       }
-
+  
       // Clear the user's wishlist
       const clearWishlistQuery = "DELETE FROM wishlist WHERE user_id = $1";
       await pool.query(clearWishlistQuery, [userId]);
-
+  
       res.status(200).json({
         message: "Order placed successfully",
         orderId,
