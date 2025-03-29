@@ -1,0 +1,103 @@
+.
+├── backend
+│   ├── app.js
+│   ├── bin
+│   │   └── www
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── public
+│   │   ├── images
+│   │   └── stylesheets
+│   │       └── style.css
+│   ├── routes
+│   │   ├── api
+│   │   │   ├── admin.js
+│   │   │   ├── auth.js
+│   │   │   ├── Cart.js
+│   │   │   ├── order.js
+│   │   │   ├── products.js
+│   │   │   └── support.js
+│   │   ├── index.js
+│   │   └── users.js
+│   ├── test.env
+│   └── views
+│       ├── error.jade
+│       ├── index.jade
+│       └── layout.jade
+├── dbms_final_db.backup
+├── final
+├── frontend
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── public
+│   │   └── vite.svg
+│   ├── README.md
+│   ├── src
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── Assets
+│   │   │   ├── amazonLogo.png
+│   │   │   ├── india.png
+│   │   │   └── react.svg
+│   │   ├── Component
+│   │   │   ├── AdminDashboard.css
+│   │   │   ├── AdminDashboard.jsx
+│   │   │   ├── CustomerSupport.css
+│   │   │   ├── CustomerSupportDashboard.css
+│   │   │   ├── CustomerSupportDashboard.jsx
+│   │   │   ├── CustomerSupport.jsx
+│   │   │   ├── Footer
+│   │   │   │   ├── Footer.css
+│   │   │   │   └── Footer.jsx
+│   │   │   ├── Home.css
+│   │   │   ├── Home.jsx
+│   │   │   ├── ItemPage.css
+│   │   │   ├── ItemPage.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   ├── loginSignup.css
+│   │   │   ├── MyCart.css
+│   │   │   ├── MyCart.jsx
+│   │   │   ├── Navbar
+│   │   │   │   ├── Navbar.css
+│   │   │   │   └── Navbar.jsx
+│   │   │   ├── navbar.css
+│   │   │   ├── navbar.jsx
+│   │   │   ├── Orderhistory.css
+│   │   │   ├── OrdersHistory.jsx
+│   │   │   ├── PricingStrategies.css
+│   │   │   ├── PricingStrategies.jsx
+│   │   │   ├── Product.css
+│   │   │   ├── Product.jsx
+│   │   │   ├── ProductStockSearch.jsx
+│   │   │   ├── ProfilePage.css
+│   │   │   ├── ProfilePage.jsx
+│   │   │   ├── SearchItems.css
+│   │   │   ├── SearchItems.jsx
+│   │   │   ├── Sell.css
+│   │   │   ├── Sell.jsx
+│   │   │   ├── SignupPage.jsx
+│   │   │   └── StockStrategies.jsx
+│   │   ├── homeProduct.json
+│   │   ├── index.css
+│   │   ├── main.jsx
+│   │   ├── redux
+│   │   │   ├── actions
+│   │   │   │   └── actions.js
+│   │   │   ├── actionsType.js
+│   │   │   ├── reducer
+│   │   │   │   └── reducer.js
+│   │   │   └── store.js
+│   │   └── Screen
+│   │       └── HomeScreen
+│   │           ├── homeScreen.css
+│   │           └── homeScreen.jsx
+│   └── vite.config.js
+├── package.json
+├── package-lock.json
+├── project_tree.txt
+├── README.md
+└── Schema.sql
+
+21 directories, 80 files
