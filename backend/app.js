@@ -55,7 +55,8 @@ var authRouter = require("./routes/api/auth");
 var productRoutes = require("./routes/api/products");
 var cartRoutes = require("./routes/api/Cart");
 var orderRoutes = require("./routes/api/order");
-var chatRoutes = require("./routes/api/Chatbot");
+var chatRoutes = require("./routes/api/support");
+var adminRoutes = require("./routes/api/admin");  
 
 
 
@@ -87,7 +88,8 @@ app.use("/api/products", productRoutes(pool));
 app.use("/api/auth", authRouter(pool)); 
 app.use("/api/cart", cartRoutes(pool));
 app.use("/api/order", orderRoutes(pool));
-app.use("/chatbot", chatRoutes);
+app.use("/api/support", chatRoutes(pool));
+app.use("/api/admin", adminRoutes(pool));
 
 
 

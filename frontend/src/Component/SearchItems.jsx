@@ -13,6 +13,7 @@ const SearchItems = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  // const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
 
@@ -94,6 +95,13 @@ const SearchItems = () => {
   return (
     <div>
       <Navbar />
+      <h1>Search Items</h1>
+        <input
+          type="text"
+          placeholder="Search for items"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
       <div className="search-items-container">
         <div className="filters">
           <h3>Categories</h3>
@@ -121,6 +129,7 @@ const SearchItems = () => {
               <div key={product.product_id} className="product-card">
                 <h3>{product.name}</h3>
                 <p>Price: ₹{product.selling_price}</p>
+                <p>MRP: ₹{product.mrp}</p>
                 <p>Brand: {product.brand_id}</p>
                 <p>Category: {product.category_id}</p>
                 <p>Rating: {product.average_rating}</p>

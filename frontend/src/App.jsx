@@ -21,7 +21,9 @@ import SellPage from "./Component/Sell";
 import OrdersHistory from "./Component/OrdersHistory";
 import DeliverItems from "./Component/DeliverItems";
 import MyCart from "./Component/MyCart";
-import Chatbot from "./Component/Chatbot";
+import CustomerSupport from "./Component/CustomerSupport";
+import CustomerSupportDashboard from "./Component/CustomerSupportDashboard";
+import AdminDashboard from "./Component/AdminDashboard";
 
 
 // const API = axios.create({
@@ -116,6 +118,17 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+<Route
+          path="/Customer-Support-Dashboard"
+          element={
+            <ProtectedRoute>
+              <CustomerSupportDashboard />
+            </ProtectedRoute>
+          }
+        />
+         
+      
         <Route
           path="/products/:productId"
           element={
@@ -157,10 +170,19 @@ function App() {
           }
         />
         <Route
-          path="/ai"
+          path="/customer-support"
           element={
             <ProtectedRoute>
-              <Chatbot />
+              <CustomerSupport />
+            </ProtectedRoute>
+          }
+        />
+
+          <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
             </ProtectedRoute>
           }
         />

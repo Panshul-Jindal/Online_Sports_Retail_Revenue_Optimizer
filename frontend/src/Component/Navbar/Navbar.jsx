@@ -38,7 +38,10 @@ const Navbar = () => {
             <Link to="/home">Home</Link>
           </li>
           <li>
-            <Link to="/ai">Chatbot</Link>
+            <Link to="/Customer-Support">Customer Support</Link>
+          </li>
+          <li>
+            <Link to="/Customer-Support-Dashboard">Customer Support Dashboard</Link>
           </li>
           <li>
             <Link to="/sell">Sell</Link>
@@ -57,6 +60,10 @@ const Navbar = () => {
           </li>
           <li>
             <Link to="/profile">Profile</Link>
+          </li>
+
+          <li>
+            <Link to="/admin-dashboard">Admin DashBoard</Link>
           </li>
 
           <li>
