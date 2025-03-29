@@ -116,9 +116,58 @@ router.get("/categories", async (req, res) => {
   }
 });
 
+
+
+// Route to fetch categories in a hierarchical structure
+router.get("/categories/hierarchy", async (req, res) => {
+  try {
+    const query = `
+      SELECT category_id, name, parent_category_id
+      FROM Categories
+      ORDER BY parent_category_id NULLS FIRST, name ASC
+    `;
+    const result = await pool.query(query);
+
+    // Build the hierarchical structure
+    const categories = {};
+    result.rows.forEach((category) => {
+      categories[category.category_id] = { ...category, children: [] };
+    });
+
+    const rootCategories = [];
+    Object.values(categories).forEach((category) => {
+      if (category.parent_category_id) {
+        categories[category.parent_category_id].children.push(category);
+      } else {
+        rootCategories.push(category);
+      }
+    });
+
+    res.status(200).json(rootCategories);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    res.status(500).json({ message: "Error fetching categories" });
+  }
+});
+// Route to fetch all brands
+router.get("/brands", async (req, res) => {
+  try {
+    const query = "SELECT brand_id, name FROM Brand ORDER BY name ASC";
+    const result = await pool.query(query);
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error fetching brands:", error);
+    res.status(500).json({ message: "Error fetching brands" });
+  }
+});
+
+
+
+
+
   // Route to fetch all products with optional search and category filter
   router.get("/search", async (req, res) => {
-    const { query, categories } = req.query;
+    const { query, categories, brands } = req.query;
     let sqlQuery = `SELECT * FROM Products`;
     let conditions = [];
     let values = [];
@@ -131,13 +180,40 @@ router.get("/categories", async (req, res) => {
   
     if (categories) {
       const categoryArray = categories.split(",").map(Number);
-      conditions.push(`category_id = ANY($${values.length + 1})`);
-      values.push(categoryArray);
+
+    // Use a Common Table Expression (CTE) to fetch all child categories
+    const categoryCTE = `
+      WITH RECURSIVE category_hierarchy AS (
+        SELECT category_id
+        FROM Categories
+        WHERE category_id = ANY($${values.length + 1})
+        UNION ALL
+        SELECT c.category_id
+        FROM Categories c
+        INNER JOIN category_hierarchy ch ON c.parent_category_id = ch.category_id
+      )
+      SELECT category_id FROM category_hierarchy
+    `;
+
+    const categoryResult = await pool.query(categoryCTE, [categoryArray]);
+    const allCategoryIds = categoryResult.rows.map((row) => row.category_id);
+
+    conditions.push(`category_id = ANY($${values.length + 1})`);
+    values.push(allCategoryIds);
     }
+
+  if (brands) {
+    const brandArray = brands.split(",").map(Number);
+    conditions.push(`brand_id = ANY($${values.length + 1})`);
+    values.push(brandArray);
+  }
   
     if (conditions.length) {
       sqlQuery += ` WHERE ` + conditions.join(" AND ");
     }
+
+    sqlQuery += ` ORDER BY product_id`;
+
     
     console.log("Executed Query",sqlQuery)
     console.log("Values",values)

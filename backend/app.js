@@ -55,7 +55,7 @@ var authRouter = require("./routes/api/auth");
 var productRoutes = require("./routes/api/products");
 var cartRoutes = require("./routes/api/Cart");
 var orderRoutes = require("./routes/api/order");
-var chatRoutes = require("./routes/Chatbot");
+var chatRoutes = require("./routes/api/Chatbot");
 
 
 
@@ -87,7 +87,7 @@ app.use("/api/products", productRoutes(pool));
 app.use("/api/auth", authRouter(pool)); 
 app.use("/api/cart", cartRoutes(pool));
 app.use("/api/order", orderRoutes(pool));
-
+app.use("/chatbot", chatRoutes);
 
 
 
@@ -117,7 +117,7 @@ app.use("/api/order", orderRoutes(pool));
 // app.use("/products", productRoutes);
 
 
-// app.use("/chatbot", chatRoutes);
+
 
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));

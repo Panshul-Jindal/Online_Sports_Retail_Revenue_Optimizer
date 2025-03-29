@@ -39,7 +39,7 @@ const Chatbot = () => {
     <>
     <Navbar />
     <div className="chatbot-container" onLoad={startSession}>
-      <div className="chat-header">Chat with IIIT Helper</div>
+      <div className="chat-header">Customer Support</div>
       <ul className="chat-messages">
         {messages.map((msg, index) => (
           <li
