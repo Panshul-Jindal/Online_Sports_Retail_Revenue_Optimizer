@@ -19,7 +19,7 @@ import SearchItems from "./Component/SearchItems";
 import ItemPage from "./Component/ItemPage";
 import SellPage from "./Component/Sell";
 import OrdersHistory from "./Component/OrdersHistory";
-import DeliverItems from "./Component/DeliverItems";
+
 import MyCart from "./Component/MyCart";
 import CustomerSupport from "./Component/CustomerSupport";
 import CustomerSupportDashboard from "./Component/CustomerSupportDashboard";
@@ -52,11 +52,21 @@ import AdminDashboard from "./Component/AdminDashboard";
 
 
 // Protected Route using session (cookies)
-const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = !!Cookies.get("userId"); // Check if the userId is set in cookies
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const isAuthenticated = !!Cookies.get("userId"); // Check if the user is authenticated
+  const userRole = Cookies.get("userRole"); // Retrieve the user's role from cookies
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  if (!allowedRoles.includes(userRole)) {
+    return <Navigate to="/" />; // Redirect to home if the user doesn't have access
+  }
+
+  return children;
 };
+
 function App() {
   const navigate = useNavigate();
 
@@ -71,12 +81,13 @@ function App() {
           currentPath === "/login" ||
           currentPath === "/signup")
       ) {
-        navigate("/profile"); // Redirect to home if session exists and user is on unauthenticated routes
+        navigate("/home"); // Redirect to home if session exists and user is on unauthenticated routes
       }
     };
 
     checkSession();
   }, [navigate]);
+
   return (
     <div className="App">
       <Routes>
@@ -89,7 +100,7 @@ function App() {
         <Route
           path="/home"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["customer", "customer_support", "admin"]}>
               <Home />
             </ProtectedRoute>
           }
@@ -97,42 +108,32 @@ function App() {
         <Route
           path="/profile"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["customer", "customer_support", "admin"]}>
               <ProfilePage />
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/products"
-          element={
-            <ProtectedRoute>
-              <Products />
-            </ProtectedRoute>
-          }
-        />
+       
         <Route
           path="/search-items"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["customer", "admin"]}>
               <SearchItems />
             </ProtectedRoute>
           }
         />
-
-<Route
-          path="/Customer-Support-Dashboard"
+        <Route
+          path="/customer-support-dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["customer_support", "admin"]}>
               <CustomerSupportDashboard />
             </ProtectedRoute>
           }
         />
-         
-      
         <Route
           path="/products/:productId"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["customer", "customer_support", "admin"]}>
               <ItemPage />
             </ProtectedRoute>
           }
@@ -140,7 +141,7 @@ function App() {
         <Route
           path="/sell"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["admin"]}>
               <SellPage />
             </ProtectedRoute>
           }
@@ -148,23 +149,15 @@ function App() {
         <Route
           path="/orders-history"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["customer", "admin"]}>
               <OrdersHistory />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/deliver-items"
-          element={
-            <ProtectedRoute>
-              <DeliverItems />
             </ProtectedRoute>
           }
         />
         <Route
           path="/my-cart"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["customer", "admin"]}>
               <MyCart />
             </ProtectedRoute>
           }
@@ -172,72 +165,22 @@ function App() {
         <Route
           path="/customer-support"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["customer", "admin"]}>
               <CustomerSupport />
             </ProtectedRoute>
           }
         />
-
-          <Route
+        <Route
           path="/admin-dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["admin"]}>
               <AdminDashboard />
             </ProtectedRoute>
           }
         />
-       
       </Routes>
     </div>
   );
 }
 
 export default App;
-
-// import React from "react";
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import axios from "axios";
-
-// import "./App.css";
-// import HomeScreen from "./Screen/HomeScreen/homeScreen";
-// import LoginPage from "./Component/LoginPage";
-// import SignupPage from "./Component/SignupPage";
-// import ProfilePage from "./Component/ProfilePage";
-// import Home from "./Component/Home";
-// import Products from "./Component/Product";
-// import SearchItems from "./Component/SearchItems";
-// import ItemPage from "./Component/ItemPage";
-// import SellPage from "./Component/Sell";
-// import OrdersHistory from "./Component/OrdersHistory";
-// import DeliverItems from "./Component/DeliverItems";
-// import MyCart from "./Component/MyCart";
-// import Chatbot from "./Component/Chatbot";
-
-
-
-
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <Routes>
-//         {/* Public Routes (No Authentication Required) */}
-//         <Route path="/" element={<HomeScreen />} />
-//         <Route path="/login" element={<LoginPage />} />
-//         <Route path="/signup" element={<SignupPage />} />
-//         <Route path="/home" element={<Home />} />
-//         <Route path="/profile" element={<ProfilePage />} />
-//         <Route path="/products" element={<Products />} />
-//         <Route path="/search-items" element={<SearchItems />} />
-//         <Route path="/products/:productId" element={<ItemPage />} />
-//         <Route path="/sell" element={<SellPage />} />
-//         <Route path="/orders-history" element={<OrdersHistory />} />
-//         <Route path="/deliver-items" element={<DeliverItems />} />
-//         <Route path="/my-cart" element={<MyCart />} />
-//         <Route path="/ai" element={<Chatbot />} />
-//       </Routes>
-//     </div>
-//   );
-// }
-
-// export default App;

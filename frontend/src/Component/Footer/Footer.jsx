@@ -29,9 +29,9 @@ const Footer = () => {
                     {/* please watch the video for code */}
                 </div>
             </div>
-            <div className="amazonImg">
+            {/* <div className="amazonImg">
                 <img className='amazonImgFooter' src={amazonLogo} />
-            </div>
+            </div> */}
         </div>
     )
 }

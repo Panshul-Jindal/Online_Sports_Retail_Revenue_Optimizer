@@ -35,6 +35,7 @@ const SignupPage = () => {
       if (response.status === 201) {
         // On successful signup, store userId in cookies
         Cookies.set("userId", data.userId);
+        Cookies.set("userRole", data.role); // Store the user role in cookies
         navigate("/profile"); // Redirect to profile page
       } else {
         alert(data.message || "Signup failed");

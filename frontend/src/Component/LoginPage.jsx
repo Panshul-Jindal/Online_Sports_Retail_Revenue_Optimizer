@@ -23,6 +23,9 @@ const LoginPage = () => {
       if (response.status === 200) {
         // Check if login is successful
         Cookies.set("userId", response.data.userId); // Store the userId in cookies
+      //set user.role in cookie
+        Cookies.set("userRole", response.data.role); // Store the user role in cookies
+        
         navigate("/home"); // Redirect to profile page
       }
     } catch (error) {

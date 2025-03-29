@@ -42,7 +42,8 @@ const Home = () => {
       <Navbar />
       <div className="home">
         <div className="home__container">
-          <img
+          <h1>Welcome to Your Shop!</h1>
+          {/* <img
             className="home__image"
             src="https://images-eu.ssl-images-amazon.com/images/G/02/digital/video/merch2016/Hero/Covid19/Generic/GWBleedingHero_ENG_COVIDUPDATE__XSite_1500x600_PV_en-GB._CB428684220_.jpg"
             alt="Banner"
@@ -65,7 +66,7 @@ const Home = () => {
             <button className="load-more-button" onClick={loadMore}>
               Load More
             </button>
-          )}
+          )} */}
         </div>
       </div>
       <Footer />
