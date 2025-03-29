@@ -5,13 +5,11 @@ import Cookies from "js-cookie"; // To manage cookies
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
-    
-    name:"",
+    name: "",
     email: "",
-    
-    
+
     password: "",
-    role:""
+    role: "",
   });
   const navigate = useNavigate();
 
@@ -20,6 +18,7 @@ const SignupPage = () => {
   };
 
   const handleSignup = async (e) => {
+    console.log(formData);
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:5000/api/auth/register", {
@@ -34,9 +33,15 @@ const SignupPage = () => {
       const data = await response.json();
       if (response.status === 201) {
         // On successful signup, store userId in cookies
+
         Cookies.set("userId", data.userId);
         Cookies.set("userRole", data.role); // Store the user role in cookies
-        navigate("/profile"); // Redirect to profile page
+        console.log("Cookies set to ", data.role);
+        if (data.userId && data.role) {
+          console.log("Navigating to /profile");
+
+          navigate("/profile"); // Redirect to profile page
+        }
       } else {
         alert(data.message || "Signup failed");
       }
@@ -52,12 +57,11 @@ const SignupPage = () => {
         <h1 className="auth-title">Join Us!</h1>
         <p className="auth-subtitle">Create your account</p>
         <form className="auth-form" onSubmit={handleSignup}>
-          
           <label>Name</label>
           <input
             type="text"
             name="name"
-            value={formData.lastName}
+            value={formData.name}
             onChange={handleChange}
             placeholder="Enter name"
             required
@@ -71,8 +75,7 @@ const SignupPage = () => {
             placeholder="Enter your email"
             required
           />
-         
-        
+
           <label>Password:</label>
           <input
             type="password"

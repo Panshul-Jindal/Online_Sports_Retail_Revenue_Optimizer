@@ -30,6 +30,7 @@ const Navbar = () => {
           <li>
             <Link to="/profile">Profile</Link>
           </li>
+          
 
           {/* Links for customer and admin */}
           {(userRole === "customer" || userRole === "admin") && (
@@ -43,6 +44,10 @@ const Navbar = () => {
               <li>
                 <Link to="/orders-history">Orders</Link>
               </li>
+              <li>
+                <Link to="/customer-support">Customer-Support</Link>
+              </li>
+            
             </>
           )}
 
