@@ -36,6 +36,8 @@ better).
 ## Schema 
 https://dbdiagram.io/d/67bf47da263d6cf9a090b690
 
+Schema is designed to satisfy BCNF and 3NF and thus theoritically has no redundancy.
+
 
 ## Further Improvements
 
