@@ -33,7 +33,8 @@ better).
 
 
 
-
+## Schema 
+https://dbdiagram.io/d/67bf47da263d6cf9a090b690
 
 
 ## Further Improvements
